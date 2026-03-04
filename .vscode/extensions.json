@@ -3,6 +3,7 @@
     "redhat.java",
     "continue.continue",
     "redhat.vscode-yaml",
-    "redhat.vscode-quarkus"
+    "redhat.vscode-quarkus",
+    "redhat.fabric8-analytics"
   ]
 }
