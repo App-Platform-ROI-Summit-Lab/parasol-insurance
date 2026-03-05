@@ -4,7 +4,11 @@ RUN microdnf install -y gzip && microdnf clean all
 USER 185
 COPY --chown=185 . /code
 WORKDIR /code
-RUN ./mvnw package -DskipTests
+RUN if [ ! -f target/quarkus-app/quarkus-run.jar ]; then \
+      ./mvnw package -DskipTests; \
+    else \
+      echo "Using pre-built artifacts from target/"; \
+    fi
 
 FROM registry.access.redhat.com/ubi9/openjdk-21-runtime:1.20
 
