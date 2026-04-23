@@ -56,12 +56,23 @@
             return lt > 0 ? from.substring(0, lt).trim() : from;
         }
 
+        // Formats a UTC/ISO timestamp to the user's locale with 12-hour AM/PM time
+        function formatLocaleTime(utcString) {
+            if (!utcString) return '';
+            const date = new Date(utcString);
+            if (isNaN(date.getTime())) return escapeHtml(utcString);
+            return date.toLocaleString(undefined, {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: 'numeric', minute: '2-digit', hour12: true
+            });
+        }
+
         function renderRow(e) {
             return '<tr class="clickable-row" data-id="' + e.id + '" onclick="toggleDetail(' + e.id + ')">' +
                 '<td>' + escapeHtml(extractName(e.from)) + '</td>' +
                 '<td>' + escapeHtml(e.subject) + '</td>' +
                 '<td><span class="dept-badge ' + deptClass(e.department) + '">' + deptLabel(e.department) + '</span></td>' +
-                '<td>' + e.receivedAt + '</td>' +
+                '<td>' + formatLocaleTime(e.receivedAt) + '</td>' +
                 '<td>' +
                     '<span class="info-icon" title="' + escapeHtml(e.routingReason) + '">&#8505;' +
                         '<span class="info-tooltip">' + escapeHtml(e.routingReason) + '</span>' +
@@ -80,7 +91,7 @@
                             '<span class="email-detail-label">Subject</span>' +
                             '<span class="email-detail-value">' + escapeHtml(e.subject) + '</span>' +
                             '<span class="email-detail-label">Received</span>' +
-                            '<span class="email-detail-value">' + e.receivedAt + '</span>' +
+                            '<span class="email-detail-value">' + formatLocaleTime(e.receivedAt) + '</span>' +
                             '<span class="email-detail-label">Department</span>' +
                             '<span class="email-detail-value"><span class="dept-badge ' + deptClass(e.department) + '">' + deptLabel(e.department) + '</span></span>' +
                             '<span class="email-detail-label">Routing Reason</span>' +
